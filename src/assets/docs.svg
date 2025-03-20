@@ -1,0 +1,39 @@
+<svg width="181.422852" height="128.393188" viewBox="0 0 181.423 128.393" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<filter id="filter_3_143_dd" x="5.743896" y="42.189575" width="170.878662" height="82.721619" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feGaussianBlur in="BackgroundImage" stdDeviation="0.841328"/>
+			<feComposite in2="SourceAlpha" operator="in" result="effect_backgroundBlur_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_backgroundBlur_1" result="shape"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+			<feOffset dx="0" dy="2.52399"/>
+			<feGaussianBlur stdDeviation="0.841328"/>
+			<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
+			<feBlend mode="normal" in2="shape" result="effect_innerShadow_2"/>
+		</filter>
+	</defs>
+	<path id="Rectangle 1102" d="M22.01 0.37L56.84 0C61.4 -0.05 65.13 3.6 65.18 8.16C65.23 12.68 68.9 16.32 73.42 16.32L159.03 16.4C167.6 16.4 174.59 23.25 174.79 31.81L176.52 108.22C176.72 117.05 169.63 124.32 160.8 124.35L23.13 124.8C14.46 124.82 7.4 117.85 7.3 109.17L6.41 16.29C6.31 7.59 13.31 0.46 22.01 0.37Z" fill="#5F5CF0" fill-opacity="1.000000" fill-rule="nonzero"/>
+	<rect id="Rectangle 1090" x="102.902344" y="25.189514" rx="3.785978" width="53.917107" height="81.745285" transform="rotate(19.8027 102.902344 25.189514)" fill="#F1F1F1" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1091" x="102.442383" y="44.434753" width="20.871138" height="3.478523" transform="rotate(19.8027 102.442383 44.434753)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1092" x="100.378662" y="50.161926" width="34.785225" height="3.478523" transform="rotate(19.8027 100.378662 50.161926)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1095" x="91.839355" y="73.889709" width="34.785225" height="3.478523" transform="rotate(19.8027 91.839355 73.889709)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1093" x="98.319824" y="55.890320" width="34.785225" height="3.478523" transform="rotate(19.8027 98.319824 55.890320)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1096" x="89.775635" y="79.615662" width="40.003010" height="3.478523" transform="rotate(19.8027 89.775635 79.615662)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1094" x="96.256348" y="61.617493" width="28.697813" height="3.478523" transform="rotate(19.8027 96.256348 61.617493)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1097" x="87.714355" y="85.344055" width="28.697813" height="3.478523" transform="rotate(19.8027 87.714355 85.344055)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1090" x="22.054688" y="36.574280" rx="3.785978" width="47.249062" height="71.635666" transform="rotate(-20.0462 22.054688 36.574280)" fill="#F1F1F1" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1091" x="32.551025" y="49.780151" width="18.289957" height="3.048326" transform="rotate(-20.0462 32.551025 49.780151)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1092" x="34.380615" y="54.792175" width="30.483261" height="3.048326" transform="rotate(-20.0462 34.380615 54.792175)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1095" x="41.956787" y="75.551453" width="30.483261" height="3.048326" transform="rotate(-20.0462 41.956787 75.551453)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1093" x="36.208008" y="59.802734" width="30.483261" height="3.048326" transform="rotate(-20.0462 36.208008 59.802734)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1096" x="43.783936" y="80.563293" width="35.055752" height="3.048326" transform="rotate(-20.0462 43.783936 80.563293)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1094" x="38.037842" y="64.814758" width="25.148693" height="3.048326" transform="rotate(-20.0462 38.037842 64.814758)" fill="#454559" fill-opacity="1.000000"/>
+	<rect id="Rectangle 1097" x="45.613770" y="85.574036" width="25.148693" height="3.048326" transform="rotate(-20.0462 45.613770 85.574036)" fill="#454559" fill-opacity="1.000000"/>
+	<g filter="url(#filter_3_143_dd)">
+		<path id="Rectangle 1073" d="M21.54 42.18L159.59 42.43C168.14 42.44 175.12 49.26 175.33 57.8L176.61 108.27C176.84 117.11 169.74 124.41 160.9 124.44L22.99 124.91C14.43 124.94 7.4 118.13 7.17 109.57L5.75 58.4C5.5 49.51 12.65 42.17 21.54 42.18Z" fill="#2C2C2C" fill-opacity="0.200000" fill-rule="nonzero"/>
+	</g>
+</svg>
