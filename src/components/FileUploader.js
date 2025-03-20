@@ -5,9 +5,8 @@ export class FileUploader extends HTMLElement {
         this.shadowRoot.innerHTML = `
       <style>
         .upload-window {
-          width: 300px;
-          height: 450px;
-          padding: 20px;
+          max-width: 300px;
+          padding: 20px 16px;
           background: linear-gradient(180.00deg, rgb(95, 92, 240),rgb(221, 220, 252) 42.5%,rgb(255, 255, 255) 100%);
           border-radius: 20px;
           text-align: center;
@@ -16,12 +15,14 @@ export class FileUploader extends HTMLElement {
           position: relative;
         }
         h1 {
+            margin: 31px 0 7px 0;
             font-size: 20px;
             font-weight: 600;
             line-height: 24px;
         }
         h2 {
-            font-size: 14px;
+            margin: 0;
+            font-size: 13px;
             font-weight: 300;
             line-height: 17px;
         }
@@ -38,6 +39,10 @@ export class FileUploader extends HTMLElement {
           background: rgba(204, 204, 206, 0.28);
           border-radius: 50%;
         }
+        .input-container {
+          position: relative;
+          display: inline-block;
+        }
         .file-name-input {
           width: 90%;
           padding: 10px;
@@ -47,31 +52,46 @@ export class FileUploader extends HTMLElement {
           margin: 10px 0;
           background: rgb(241, 241, 241);
           color: #5F5CF0;
-            font-size: 17px;
-            font-weight: 500;
-            line-height: 21px;
+          font-size: 17px;
+          font-weight: 500;
+          line-height: 21px;
+        }
+        .file-name-input:focus {
+          outline: none;
+        }
+        .clear-input-btn {
+          position: absolute;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          color: gray;
         }
         .drag-area {
           border: 1px solid #A5A5A5;
-          padding: 20px;
+          padding: 42px 27px;
           border-radius: 30px;
           margin-bottom: 10px;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
           background: rgba(255, 255, 255, 0.4);
         }
+        .drag-area-inner {
+          object-fit: cover;
+          max-width: 170px;
+        }
         .drag-area img {
-          width: 169px;
-          height: 125px;
+          max-width: 100%;
           margin-bottom: 10px;
         }
         .drag-area-descr {
             font-size: 14px;
             font-weight: 400;
             line-height: 17px;
-            letter-spacing: 0;
             color: #5F5CF0;
         }
         .progress-bar-container {
@@ -152,15 +172,33 @@ export class FileUploader extends HTMLElement {
           text-align: center;
           color: black;
         }
+        .close-modal {
+          position: absolute;
+          width: 34px;
+          height: 34px;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          color: white;
+          font-size: 24px;
+          font-weight: 600;
+          background: rgba(204, 204, 206, 0.28);
+          border-radius: 50%;
+        }
       </style>
       <div class="upload-window">
         <span class="close-btn">&times;</span>
         <h1 class="upload-window-title">Загрузочное окно</h1>
         <h2 class="upload-window-descr">Перед загрузкой дайте имя файлу</h2>
-        <input type="text" class="file-name-input" placeholder="Название файла" />
+        <div class="input-container">
+            <input type="text" id="search" class="file-name-input" placeholder="Название файла" />
+            <button class="clear-input-btn">✖</button>
+        </div>
         <div class="drag-area">
-          <img src="/src/assets/docs.svg" alt="Документ">
-          <p class="drag-area-descr">Перенесите ваш файл в область ниже</p>
+          <div class="drag-area-inner">
+            <img src="/src/assets/docs.svg" alt="Документ">
+            <div class="drag-area-descr">Перенесите ваш файл в область ниже</div>
+          </div>
         </div>
         <input type="file" class="file-input" hidden accept=".txt,.json,.csv" />
         <div class="progress-bar-container">
@@ -179,8 +217,8 @@ export class FileUploader extends HTMLElement {
         <button class="upload-button" disabled>Загрузить</button>
       </div>
       <div class="modal">
+        <span class="close-modal">&times;</span>
         <p class="modal-message"></p>
-        <button class="close-modal">Закрыть</button>
       </div>
     `;
         this.fileName = "";
@@ -188,6 +226,7 @@ export class FileUploader extends HTMLElement {
         this.uploadWindowDescr = this.shadowRoot.querySelector(".upload-window-descr");
         this.fileInput = this.shadowRoot.querySelector(".file-input");
         this.fileNameInput = this.shadowRoot.querySelector(".file-name-input");
+        this.clearInputBtn = this.shadowRoot.querySelector(".clear-input-btn");
         this.dragArea = this.shadowRoot.querySelector(".drag-area");
         this.progressBarContainer = this.shadowRoot.querySelector(".progress-bar-container");
         this.progressTitle = this.shadowRoot.querySelector(".progress-title");
@@ -203,6 +242,7 @@ export class FileUploader extends HTMLElement {
 
         this.fileNameInput.addEventListener("input", () => this.updateDescr());
         this.fileNameInput.addEventListener("input", () => this.updateButtonState());
+        this.clearInputBtn.addEventListener("click", () => this.clearInput());
         this.uploadButton.addEventListener("click", () => this.uploadFile());
         this.dragArea.addEventListener("click", () => this.fileInput.click());
         this.fileInput.addEventListener("change", () => this.handleFileSelect());
@@ -229,9 +269,16 @@ export class FileUploader extends HTMLElement {
         this.progressTitle.textContent = this.fileNameInput.value + this.fileName.slice(-4);
     }
 
+    clearInput() {
+        this.fileNameInput.value = "";
+        this.uploadWindowDescr.textContent = "Перед загрузкой дайте имя файлу";
+        this.clearInputBtn.style.color = "grey";
+    }
+
     updateDescr() {
         if (this.fileNameInput.value.trim()) {
             this.uploadWindowDescr.textContent = "Перенесите ваш файл в область ниже";
+            this.clearInputBtn.style.color = "#5F5CF0";
         } else {
             this.uploadWindowDescr.textContent = "Перед загрузкой дайте имя файлу";
         }
@@ -241,15 +288,14 @@ export class FileUploader extends HTMLElement {
         const file = this.fileInput.files[0];
         if (!file) return;
 
-        if (!["text/plain", "application/json", "text/csv"].includes(file.type)) {
-            alert("Ошибка: Неподдерживаемый формат файла.");
+        const validTypes = ["text/plain", "application/json", "text/csv"];
+        if (!validTypes.includes(file.type)) {
             this.fileInput.value = "";
-            return;
+            return this.showModal("Ошибка: Неподдерживаемый формат файла.", true);
         }
         if (file.size > 1024) {
-            alert("Ошибка: Размер файла превышает 1KB.");
             this.fileInput.value = "";
-            return;
+            return this.showModal("Ошибка: Размер файла превышает 1MB.", true);
         }
         this.fileName = file.name;
     }
