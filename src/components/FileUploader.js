@@ -5,14 +5,14 @@ export class FileUploader extends HTMLElement {
         this.shadowRoot.innerHTML = `
       <style>
         .upload-window {
-          width: 302px;
-          height: 479px;
+          width: 300px;
+          height: 450px;
           padding: 20px;
           background: linear-gradient(180.00deg, rgb(95, 92, 240),rgb(221, 220, 252) 42.5%,rgb(255, 255, 255) 100%);
           border-radius: 20px;
           text-align: center;
           color: white;
-          font-family: Inter sans-serif;
+          font-family: Inter, sans-serif;
           position: relative;
         }
         h1 {
@@ -33,7 +33,7 @@ export class FileUploader extends HTMLElement {
           right: 10px;
           cursor: pointer;
           color: white;
-          font-size: 30px;
+          font-size: 24px;
           font-weight: 600;
           background: rgba(204, 204, 206, 0.28);
           border-radius: 50%;
@@ -47,8 +47,7 @@ export class FileUploader extends HTMLElement {
           margin: 10px 0;
           background: rgb(241, 241, 241);
           color: #5F5CF0;
-          font-family: Inter;
-            font-size: 17.5px;
+            font-size: 17px;
             font-weight: 500;
             line-height: 21px;
         }
@@ -79,7 +78,10 @@ export class FileUploader extends HTMLElement {
             border: 1px solid gray;
             border-radius: 10px;
             display: none;
+            justify-content: space-between;
+            align-items: center;
             padding: 3px;
+            margin: 10px 0;
         }
         .progress-block {
             width: 37px;
@@ -88,11 +90,12 @@ export class FileUploader extends HTMLElement {
             border-radius: 10px;
         }
         .progress-wrapper {
-            justify-content: space-between;
+            width: 70%;
         }
         .progress-wrapper-title {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             color: #5F5CF0;
         }
         .progress-title {
@@ -109,13 +112,19 @@ export class FileUploader extends HTMLElement {
             background: #ddd;
             border-radius: 3px;
             overflow: hidden;
-            margin: 10px 0;
         }
         .progress {
             width: 0;
             height: 100%;
             background: #5F5CF0;
             transition: width 0.2s;
+        }
+        .progress-close-btn {
+          cursor: pointer;
+          color: #5F5CF0;
+          font-size: 24px;
+          font-weight: 600;
+          margin-right: 5px;
         }
         .upload-button {
           width: 100%;
@@ -165,6 +174,7 @@ export class FileUploader extends HTMLElement {
                     <div class="progress"></div>
                 </div>
             </div>
+            <span class="progress-close-btn">&times;</span>
         </div>
         <button class="upload-button" disabled>Загрузить</button>
       </div>
@@ -184,6 +194,7 @@ export class FileUploader extends HTMLElement {
         this.progressBar = this.shadowRoot.querySelector(".progress-bar");
         this.progress = this.shadowRoot.querySelector(".progress");
         this.progressText = this.shadowRoot.querySelector(".progress-text");
+        this.progressCloseBtn = this.shadowRoot.querySelector(".progress-close-btn");
         this.uploadButton = this.shadowRoot.querySelector(".upload-button");
         this.modal = this.shadowRoot.querySelector(".modal");
         this.modalMessage = this.shadowRoot.querySelector(".modal-message");
@@ -199,6 +210,16 @@ export class FileUploader extends HTMLElement {
         this.fileInput.addEventListener("change", () => this.changeNameFile());
         this.closeModalButton.addEventListener("click", () => this.modal.style.display = "none");
         this.closeBtn.addEventListener("click", () => this.remove());
+        this.progressCloseBtn.addEventListener("click", () => this.removeFile());
+    }
+
+    startPageChanged() {
+        this.fileNameInput.value = "";
+        this.fileInput.value = "";
+        this.fileNameInput.style.display = "block";
+        this.progressBarContainer.style.display = "none";
+        this.uploadWindowDescr.textContent = "Перед загрузкой дайте имя файлу";
+        this.uploadButton.disabled = true;
     }
 
     changeNameFile() {
@@ -252,9 +273,15 @@ export class FileUploader extends HTMLElement {
             if (progress === 100) {
                 clearInterval(interval);
                 this.uploadWindowDescr.textContent = "Загрузите ваш файл";
+                this.progressBar.style.display = "none";
+                this.progressTitle.style.fontSize = "16px";
                 this.updateButtonState();
             }
         }, 200);
+    }
+
+    removeFile() {
+        this.startPageChanged()
     }
 
     updateButtonState() {
@@ -262,20 +289,16 @@ export class FileUploader extends HTMLElement {
     }
 
     showModal(response, isError = false) {
-        this.modalMessage.innerHTML = isError
-            ? `<h1>Ошибка в загрузке файла</h1>
+        this.modalMessage.innerHTML = isError ? `<h1>Ошибка в загрузке файла</h1>
            <p>Error: ${response.status} ${response.statusText}</p>
-           <p>"${response.message}"</p>`
-            : `<h1>Файл успешно загружен</h1>
+           <p>"${response.message}"</p>` : `<h1>Файл успешно загружен</h1>
            <p>name: ${response.name}</p>
            <p>filename: ${response.filename.split('_').pop()}</p>
            <p>timestamp: ${new Date(response.timestamp).toLocaleTimeString()}</p>
            <p>message: ${response.message}</p>`;
 
         this.modal.style.display = "block";
-        this.modal.style.background = isError
-            ? "linear-gradient(to bottom, #FF6B6B, #6A82FB)"
-            : "linear-gradient(to bottom, #5F5CF0, #8B78F6)";
+        this.modal.style.background = isError ? "linear-gradient(to bottom, #FF6B6B, #6A82FB)" : "linear-gradient(to bottom, #5F5CF0, #8B78F6)";
 
         this.modal.style.color = "white";
         this.modal.style.padding = "20px";
@@ -287,12 +310,14 @@ export class FileUploader extends HTMLElement {
         if (!file) return;
 
         this.uploadButton.disabled = true;
+        this.progressBar.style.display = "flex";
         this.progressBar.style.width = "0%";
         let progress = 0;
 
         const interval = setInterval(() => {
             progress += 20;
             this.progressBar.style.width = `${progress}%`;
+            this.progressText.textContent = `${Math.round(progress)}%`;
             if (progress >= 100) clearInterval(interval);
         }, 300);
 
@@ -314,18 +339,13 @@ export class FileUploader extends HTMLElement {
                 this.showModal(result);
             } else {
                 this.showModal({
-                    status: response.status,
-                    statusText: response.statusText,
-                    message: result.message
+                    status: response.status, statusText: response.statusText, message: result.message
                 }, true);
             }
         } catch (error) {
             this.showModal({status: "Network Error", statusText: "", message: "Ошибка сети"}, true);
         } finally {
-            this.fileNameInput.value = "";
-            this.fileNameInput.style.display = "block";
-            this.progressBarContainer.style.display = "none";
-            this.uploadWindowDescr.textContent = "Перед загрузкой дайте имя файлу";
+            this.startPageChanged()
         }
     }
 }
