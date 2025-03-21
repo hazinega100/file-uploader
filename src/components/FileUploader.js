@@ -162,15 +162,23 @@ export class FileUploader extends HTMLElement {
         }
         .modal {
           display: none;
+          width: 220px;
           position: fixed;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          padding: 20px;
+          padding: 15px;
           background: white;
           border-radius: 10px;
           text-align: center;
           color: black;
+          font-family: Inter, sans-serif;
+          font-size: 14px;
+        }
+        .modal-success {
+            margin: 0 auto;
+            width: 140px;
+            text-align: left;
         }
         .close-modal {
           position: absolute;
@@ -187,7 +195,7 @@ export class FileUploader extends HTMLElement {
         }
       </style>
       <div class="upload-window">
-        <span class="close-btn">&times;</span>
+        <img class="close-btn" src="/src/assets/cross%20button.svg" alt="cross-btn">
         <h1 class="upload-window-title">Загрузочное окно</h1>
         <h2 class="upload-window-descr">Перед загрузкой дайте имя файлу</h2>
         <div class="input-container">
@@ -217,8 +225,8 @@ export class FileUploader extends HTMLElement {
         <button class="upload-button" disabled>Загрузить</button>
       </div>
       <div class="modal">
-        <span class="close-modal">&times;</span>
-        <p class="modal-message"></p>
+        <img class="close-modal" src="/src/assets/cross%20button.svg" alt="cross-btn">
+        <div class="modal-message"></div>
       </div>
     `;
         this.fileName = "";
@@ -257,6 +265,7 @@ export class FileUploader extends HTMLElement {
         this.fileNameInput.value = "";
         this.fileInput.value = "";
         this.fileNameInput.style.display = "block";
+        this.clearInputBtn.style.display = "inline";
         this.progressBarContainer.style.display = "none";
         this.uploadWindowDescr.textContent = "Перед загрузкой дайте имя файлу";
         this.uploadButton.disabled = true;
@@ -291,11 +300,19 @@ export class FileUploader extends HTMLElement {
         const validTypes = ["text/plain", "application/json", "text/csv"];
         if (!validTypes.includes(file.type)) {
             this.fileInput.value = "";
-            return this.showModal("Ошибка: Неподдерживаемый формат файла.", true);
+            return this.showModal({
+                status: "Ошибка файла",
+                statusText: "",
+                message: "Неподдерживаемый формат файла."
+            }, true);
         }
         if (file.size > 1024) {
             this.fileInput.value = "";
-            return this.showModal("Ошибка: Размер файла превышает 1MB.", true);
+            return this.showModal({
+                status: "Ошибка файла",
+                statusText: "",
+                message: "Размер файла превышает 1MB."
+            }, true);
         }
         this.fileName = file.name;
     }
@@ -304,6 +321,7 @@ export class FileUploader extends HTMLElement {
         if (!this.fileInput.files.length) return;
 
         this.fileNameInput.style.display = "none";
+        this.clearInputBtn.style.display = "none";
         this.progressBarContainer.style.display = "flex";
         this.progress.style.width = "0%";
         this.progressText.textContent = "0%";
@@ -336,12 +354,14 @@ export class FileUploader extends HTMLElement {
 
     showModal(response, isError = false) {
         this.modalMessage.innerHTML = isError ? `<h1>Ошибка в загрузке файла</h1>
-           <p>Error: ${response.status} ${response.statusText}</p>
-           <p>"${response.message}"</p>` : `<h1>Файл успешно загружен</h1>
-           <p>name: ${response.name}</p>
-           <p>filename: ${response.filename.split('_').pop()}</p>
-           <p>timestamp: ${new Date(response.timestamp).toLocaleTimeString()}</p>
-           <p>message: ${response.message}</p>`;
+           <div>Error: ${response.status} ${response.statusText}</div>
+           <div>"${response.message}"</div>` : `<h1>Файл успешно загружен</h1>
+           <div class="modal-success">
+               <div>name: ${response.name}</div>
+               <div>filename: ${response.filename.split('_').pop()}</div>
+               <div>timestamp: ${new Date(response.timestamp).toLocaleTimeString()}</div>
+               <div>message: ${response.message}</div>
+           </div>`;
 
         this.modal.style.display = "block";
         this.modal.style.background = isError ? "linear-gradient(to bottom, #FF6B6B, #6A82FB)" : "linear-gradient(to bottom, #5F5CF0, #8B78F6)";
